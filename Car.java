@@ -12,7 +12,7 @@ public class Car implements Listing
 	@SuppressWarnings("serial")
 	ArrayList<String> makeList = new ArrayList<String>()
 	{{
-        add("Honda");
+        	add("Honda");
 		add("Toyota");
 		add("Subaru");
 		add("Mazda");
@@ -30,11 +30,11 @@ public class Car implements Listing
 	@SuppressWarnings("serial")
 	ArrayList<String> toyotaModelList = new ArrayList<String>()
 	{{
-        add("Camry");
-	    add("Four Runner");
-	    add("Tercel");
-	    add("Corolla");
-	    add("Avalanche");
+            	add("Camry");
+	    	add("Four Runner");
+	    	add("Tercel");
+	    	add("Corolla");
+	    	add("Avalanche");
 	}};
 	@SuppressWarnings("serial")
 	ArrayList<String> subaruModelList = new ArrayList<String>()
