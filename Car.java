@@ -9,32 +9,37 @@ public class Car implements Listing
 	final static int MAXYEAR = MINYEAR + 18;
 	final static int MINCOST = 5000;
 	final static int MAXCOST = 35000;
+	private int year, cost;
+	private String make, model, color;
+	
 	@SuppressWarnings("serial")
-	ArrayList<String> makeList = new ArrayList<String>()
-	{{
-        	add("Honda");
+	static ArrayList<String>  makeList = new ArrayList<String>()
+	{{ 
+		add("Honda");
 		add("Toyota");
 		add("Subaru");
 		add("Mazda");
 		add("Acura");
 	}};
+	
 	@SuppressWarnings("serial")
-	ArrayList<String> hondaModelList = new ArrayList<String>()
-	{{	
+	static ArrayList<String> hondaModelList = new ArrayList<String>()
+	{{
 		add("CRV");
 		add("Pilot");
 		add("Accord");
 		add("Civic");
 		add("HRV");
 	}};
+	
 	@SuppressWarnings("serial")
 	ArrayList<String> toyotaModelList = new ArrayList<String>()
 	{{
-            	add("Camry");
-	    	add("Four Runner");
-	    	add("Tercel");
-	    	add("Corolla");
-	    	add("Avalanche");
+        add("Camry");
+	    add("Four Runner");
+	    add("Tercel");
+	    add("Corolla");
+	    add("Avalanche");
 	}};
 	@SuppressWarnings("serial")
 	ArrayList<String> subaruModelList = new ArrayList<String>()
@@ -72,8 +77,6 @@ public class Car implements Listing
 		add("Green");
 		add("Blue");
 	}};
-	private int year, cost;
-	private String make, model, color;
 
 	public Car() {}
 
@@ -166,21 +169,21 @@ public class Car implements Listing
 	{
 		System.out.println("\n\nEntering return will simply skip the option.\n");
 		
-		min.setCost(VehicleUtil.queryInt("Please enter the minimum amount you want to spend: "));
-		max.setCost(VehicleUtil.queryInt("Please enter the most you'd spend: "));
+		min.setCost(ListingUtil.queryInt("Please enter the minimum amount you want to spend: "));
+		max.setCost(ListingUtil.queryInt("Please enter the most you'd spend: "));
 		
-		min.setYear(VehicleUtil.queryInt("Please enter the minimum year of the vehicle you're looking for: "));
-		max.setYear(VehicleUtil.queryInt("Please enter the maximum year of the vehicle you're looking for: "));
+		min.setYear(ListingUtil.queryInt("Please enter the minimum year of the vehicle you're looking for: "));
+		max.setYear(ListingUtil.queryInt("Please enter the maximum year of the vehicle you're looking for: "));
 				
 
-		min.setColor(VehicleUtil.queryString("Please enter your color preference: "));
-		max.setColor(VehicleUtil.queryString("Please enter second color preference if applicable: "));
+		min.setColor(ListingUtil.queryString("Please enter your color preference: "));
+		max.setColor(ListingUtil.queryString("Please enter second color preference if applicable: "));
 		
-		min.setMake(VehicleUtil.queryString("Please enter your vehicle make preference: "));
-		max.setMake(VehicleUtil.queryString("Please enter second make preference if applicable: "));
-		
-		min.setModel(VehicleUtil.queryString("Please enter your vehicle model preference: "));
-		max.setModel(VehicleUtil.queryString("Please enter second model preference if applicable: "));
+		min.setMake(ListingUtil.queryString("Please enter your vehicle make preference: "));
+		max.setMake(ListingUtil.queryString("Please enter second make preference if applicable: "));
+	
+		min.setModel(ListingUtil.queryString("Please enter your vehicle model preference: "));
+		max.setModel(ListingUtil.queryString("Please enter second model preference if applicable: "));
 	}
 	
 	public boolean matchCriteria(Car min, Car max) 
@@ -195,11 +198,11 @@ public class Car implements Listing
 		{
 			//price range match
 		}
-		else if(max.cost == 0 && min.cost <= cost)
+		else if(min.cost == 0 && max.cost >= cost)
 		{
 			//price range match
 		}
-		else if(min.cost == 0 && max.cost >= cost)
+		else if(max.cost == 0 && min.cost <= cost)
 		{
 			//price range match
 		}
@@ -218,11 +221,11 @@ public class Car implements Listing
 		{
 			//year range match
 		}
-		else if(max.year == 0 && min.year <= year)
+		else if(min.year == 0 && max.year >= year)
 		{
 			//year range match
 		}
-		else if(min.year == 0 && max.year >= year)
+		else if(max.year == 0 && min.year <= year)
 		{
 			//year range match
 		}
@@ -233,18 +236,22 @@ public class Car implements Listing
 		 				
 		//this if-else-if deals with color matching
 		
-		if(min.color.equals("") && max.color.equals(""))
+		if(max.color == null && min.color == null)
+		{
+			//color match
+		}
+		else if(min.color == null && color.equalsIgnoreCase(max.color))
 		{
 			//all colors apply
 		}
-		else if(min.color.equalsIgnoreCase(color))
+		else if(max.color == null && color.equalsIgnoreCase(min.color))
 		{
 			//color match
 		}
-		else if(max.color.equalsIgnoreCase(color))
+		else if(color.equalsIgnoreCase(min.color) || color.equalsIgnoreCase(max.color))
 		{
-			//color match
-		}		
+			//match
+		}
 		else
 		{
 			return false;
@@ -252,15 +259,19 @@ public class Car implements Listing
 		
 		//this if-else-if deals with make matching
 		
-		if(min.make.equals("") && max.make.equals(""))
+		if(min.make == null && max.make == null)
 		{
 			//all makes apply
 		}
-		else if(min.make.equalsIgnoreCase(make))
+		else if(min.make == null && make.equalsIgnoreCase(max.make))
 		{
 			//make match
 		}
-		else if(max.make.equalsIgnoreCase(make))
+		else if(max.make == null && make.equalsIgnoreCase(min.make))
+		{
+			//make match
+		}
+		else if(make.equalsIgnoreCase(min.make) || make.equalsIgnoreCase(max.make))
 		{
 			//make match
 		}
@@ -271,17 +282,21 @@ public class Car implements Listing
 		
 		//this if-else-if deals with model matching
 		
-		if(min.model.length() == 0 && max.model.length() == 0)
+		if(min.model == null && max.model == null)
 		{
 			//all models apply
 		}
-		else if(min.model.equalsIgnoreCase(model))
+		else if(min.model == null && model.equalsIgnoreCase(max.model))
 		{
-			//make match
+			//model match
 		}
-		else if(max.model.equalsIgnoreCase(model))
+		else if(max.model == null && model.equalsIgnoreCase(min.model))
 		{
-			//make match
+			//model match
+		}
+		else if(model.equalsIgnoreCase(min.model) || model.equalsIgnoreCase(max.model))
+		{
+			//model match
 		}
 		else
 		{
