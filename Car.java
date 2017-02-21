@@ -35,11 +35,11 @@ public class Car implements Listing
 	@SuppressWarnings("serial")
 	ArrayList<String> toyotaModelList = new ArrayList<String>()
 	{{
-        add("Camry");
-	    add("Four Runner");
-	    add("Tercel");
-	    add("Corolla");
-	    add("Avalanche");
+                add("Camry");
+	  	add("Four Runner");
+	    	add("Tercel");
+	    	add("Corolla");
+	    	add("Avalanche");
 	}};
 	@SuppressWarnings("serial")
 	ArrayList<String> subaruModelList = new ArrayList<String>()
@@ -238,11 +238,11 @@ public class Car implements Listing
 		
 		if(max.color == null && min.color == null)
 		{
-			//color match
+			//all colors apply
 		}
 		else if(min.color == null && color.equalsIgnoreCase(max.color))
 		{
-			//all colors apply
+			//color match
 		}
 		else if(max.color == null && color.equalsIgnoreCase(min.color))
 		{
@@ -250,7 +250,7 @@ public class Car implements Listing
 		}
 		else if(color.equalsIgnoreCase(min.color) || color.equalsIgnoreCase(max.color))
 		{
-			//match
+			//color match
 		}
 		else
 		{
