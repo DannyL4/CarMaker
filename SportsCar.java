@@ -6,14 +6,16 @@ public class SportsCar extends Car
 	
 	public static void main(String[] args) 
 	{
-		SportsCar firstCar = new SportsCar();
-		firstCar.setAll("Ferrari", "Testarossa", "Matte Black", 2015, 45000, 550, 4.45f);
-		firstCar.displaySportsCar();
+		SportsCar first = new SportsCar();
+		first.setAll("Ferrari", "Testarossa", "Matte Black", 2015, 45000, 550, 4.45f);
+		first.print();
 	}
 	
-	public void displaySportsCar()
+	
+	
+	public void print()
 	{
-		super.displayCar();
+		super.print();
 		System.out.println("HorsePower: " + this.horsePower + "\nAcceleration Time: " + this.accelTime);
 	}
 
@@ -24,19 +26,23 @@ public class SportsCar extends Car
 		this.setAccelTime(accelTime);
 	}
 
-	public int getHorsePower() {
+	public int getHorsePower() 
+	{
 		return horsePower;
 	}
 
-	public void setHorsePower(int horsePower) {
+	public void setHorsePower(int horsePower) 
+	{
 		this.horsePower = horsePower;
 	}
 
-	public float getAccelTime() {
+	public float getAccelTime() 
+	{
 		return accelTime;
 	}
 
-	public void setAccelTime(float accelTime) {
+	public void setAccelTime(float accelTime) 
+	{
 		this.accelTime = accelTime;
 	}
 	

@@ -8,38 +8,32 @@ import java.util.Scanner;
 public class VehicleSearch 
 {	
 	static ArrayList<Car> carOptions = new ArrayList<Car>();
-	
+	static SearchCriteria criteria = new SearchCriteria();
+
+
 	public static void main(String[] args) 
 	{
-		Car min = new Car();
-		Car max = new Car();
-		
-		//userOptions();
-		randomCarList();
-		//displayCarList();
-		//removeCar();
-		displayCarList();
-		Car.setSearch(min, max);
-		displayCarMatches(min, max);
+		userOptions();
 	}
 	
 	public static void userOptions()
 	{
 		int choice = -1;
-		Car min = new Car();
-		Car max = new Car();
 		
 		while(choice != 5)
 		{
 			Scanner entry = new Scanner(System.in);
+			
 			System.out.println("\nWhat would you like to do? Enter 0 to create a random car list, 1 to add a car to a list,"
 					+ " 2 for removing a car from a list, " + "3 to list all cars, 4 to search for a car or 5 to quit:");
 			choice = entry.nextInt();
+			
 			switch(choice)
 			{
 			case 0:
-				randomCarList();
-				displayCarList();
+				createCarList();
+				displayCarList
+				();
 				break;
 			case 1:
 				displayCarList();
@@ -63,10 +57,14 @@ public class VehicleSearch
 				displayCarList();
 				break;
 			case 4:
-				randomCarList();
+				if(carOptions.isEmpty())
+				{
+					System.out.println("List is currently empty, why not add to it? ");
+					break;
+				}
 				displayCarList();
-				Car.setSearch(min, max);
-				displayCarMatches(min, max);
+				Car.setSearch(criteria);
+				displayCarMatches(criteria);
 				break;
 			case 5:
 				System.out.println("See you next time!");
@@ -78,6 +76,7 @@ public class VehicleSearch
 			}
 		 }
 	}
+	
 	public static void addUserCar()
 	{
 		Car user = new Car();
@@ -99,13 +98,13 @@ public class VehicleSearch
 		Scanner input = new Scanner(System.in);
 		System.out.println("\nPlease enter the index of the vehicle you want removed: ");
 		int index = input.nextInt();
-		System.out.println("You are removing index " + index + ", which is the following vehicle: \n");
-		carOptions.get(index).displayCar();
+		System.out.println("You are removing index " + index + ", which is the following vehicle: ");
+		carOptions.get(index).print();
 		carOptions.remove(index);
 		displayCarList();
 	}
 
-	public static void randomCarList() 
+	public static void createCarList() 
 	{
 		Car newRandomCar;
 		Scanner input = new Scanner(System.in);
@@ -126,11 +125,11 @@ public class VehicleSearch
 		for (Car auto : carOptions)
 		{
 			System.out.println("\nThe index of the following vehicle is " + carOptions.indexOf(auto) + ".");
-			auto.displayCar();
+			auto.print();
 		}
 	}
 	
-	public static void displayCarMatches(Car minCar, Car maxCar)
+	public static void displayCarMatches(SearchCriteria criteria)
 	{
 		boolean isMatch;
 		int matches = 0;
@@ -139,12 +138,12 @@ public class VehicleSearch
 		
 		for (Car auto : carOptions) 
 		{
-			isMatch = auto.matchCriteria(minCar, maxCar);
+			isMatch = auto.matchCriteria(criteria);
 			if (isMatch == true) 
 			{	
 				matches++;
 				System.out.println("\nThe index of the following vehicle is " + carOptions.indexOf(auto) + ".");
-				auto.displayCar();
+				auto.print();
 			}
 		}
 		if (matches == 0)

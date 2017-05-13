@@ -3,14 +3,17 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Car implements Listing
+//we want Car to extend the abstract RoadVehicle class which implements Listing
+public class Car extends RoadVehicle implements Listing
 {
 	final static int MINYEAR = 2000;
 	final static int MAXYEAR = MINYEAR + 18;
 	final static int MINCOST = 5000;
 	final static int MAXCOST = 35000;
-	private int year, cost;
-	private String make, model, color;
+	/*private int year, cost;
+	private String make, model, color;*/
+	
+	SearchCriteria criteria = new SearchCriteria();
 	
 	@SuppressWarnings("serial")
 	static ArrayList<String>  makeList = new ArrayList<String>()
@@ -35,11 +38,11 @@ public class Car implements Listing
 	@SuppressWarnings("serial")
 	ArrayList<String> toyotaModelList = new ArrayList<String>()
 	{{
-                add("Camry");
-	  	add("Four Runner");
-	    	add("Tercel");
-	    	add("Corolla");
-	    	add("Avalanche");
+        add("Camry");
+	    add("Four Runner");
+	    add("Tercel");
+	    add("Corolla");
+	    add("Avalanche");
 	}};
 	@SuppressWarnings("serial")
 	ArrayList<String> subaruModelList = new ArrayList<String>()
@@ -71,33 +74,33 @@ public class Car implements Listing
 	@SuppressWarnings("serial")
 	ArrayList<String> colorList = new ArrayList<String>()
 	{{
-		add("Black");
-		add("White");
-		add("Red");
-		add("Green");
-		add("Blue");
+		add("black");
+		add("white");
+		add("red");
+		add("green");
+		add("blue");
 	}};
 
-	public Car() {}
-
-	public Car(String make, String model, String color, int year, int cost) 
+	public Car() 
 	{
-		this.make = make;
-		this.model = model;
-		this.color = color;
-		this.year = year;
-		this.cost = cost;
+		
 	}
 	
-	public void displayCar() 
+	public Car(int year, String make, String model, String color, int cost) 
 	{
-		System.out.print("\nMake: "+ this.make + "\nModel: " + this.model + 
-				"\nYear: " + this.year + "\nColor: "
+		super(year, make, model, color, cost);
+	}
+	
+	public void print() 
+	{
+		System.out.print("\nYear: " + this.year + "\nMake: " + this.make +
+				"\nModel: " + this.model + "\nColor: "
 				+ this.color + "\nCost: $" + this.cost + "\n");
 	}
 	
 	public void setAll(String make, String model, String color, int year, int cost) 
 	{
+		
 		this.make = make;
 		this.model = model;
 		this.color = color;
@@ -149,7 +152,7 @@ public class Car implements Listing
 		this.make = make;
 		
 		System.out.println("Please enter the particular model: ");
-		String model = input.nextLine();
+		String model = input.nextLine().toLowerCase().trim();
 		this.model = model;
 		
 		System.out.println("Please enter the color preference: ");
@@ -160,49 +163,49 @@ public class Car implements Listing
 		int year = input.nextInt();
 		this.year = year;
 		
-		System.out.println("Please enter the cost: ");
+		System.out.println("Please enter how much you're willing to spend: ");
 		int cost = input.nextInt();
 		this.cost = cost;
 	}
 	
-	public static void setSearch(Car min, Car max) 
+	public static void setSearch(SearchCriteria criteria) 
 	{
 		System.out.println("\n\nEntering return will simply skip the option.\n");
 		
-		min.setCost(ListingUtil.queryInt("Please enter the minimum amount you want to spend: "));
-		max.setCost(ListingUtil.queryInt("Please enter the most you'd spend: "));
+		criteria.setMinCost(ListingUtil.queryInt("Please enter the minimum amount you want to spend: "));
+		criteria.setMaxCost(ListingUtil.queryInt("Please enter the most you'd spend: "));
 		
-		min.setYear(ListingUtil.queryInt("Please enter the minimum year of the vehicle you're looking for: "));
-		max.setYear(ListingUtil.queryInt("Please enter the maximum year of the vehicle you're looking for: "));
+		criteria.setMinYear(ListingUtil.queryInt("Please enter the minimum year of the vehicle you're looking for: "));
+		criteria.setMaxYear(ListingUtil.queryInt("Please enter the maximum year of the vehicle you're looking for: "));
 				
 
-		min.setColor(ListingUtil.queryString("Please enter your color preference: "));
-		max.setColor(ListingUtil.queryString("Please enter second color preference if applicable: "));
+		criteria.setColor(ListingUtil.queryString("Please enter your color preference: "));
+		//max.setColor(ListingUtil.queryString("Please enter second color preference if applicable: "));
 		
-		min.setMake(ListingUtil.queryString("Please enter your vehicle make preference: "));
-		max.setMake(ListingUtil.queryString("Please enter second make preference if applicable: "));
+		criteria.setMake(ListingUtil.queryString("Please enter your vehicle make preference: "));
+		//max.setMake(ListingUtil.queryString("Please enter second make preference if applicable: "));
 	
-		min.setModel(ListingUtil.queryString("Please enter your vehicle model preference: "));
-		max.setModel(ListingUtil.queryString("Please enter second model preference if applicable: "));
+		criteria.setModel(ListingUtil.queryString("Please enter your vehicle model preference: "));
+		//max.setModel(ListingUtil.queryString("Please enter second model preference if applicable: "));
 	}
 	
-	public boolean matchCriteria(Car min, Car max) 
+	public boolean matchCriteria(SearchCriteria criteria) 
 	{
 		//this if-else-if deals with cost matching
 		
-		if(min.cost == 0 && max.cost == 0)
+		if(criteria.getMinCost() == 0 && criteria.getMaxCost() == 0)
 		{
 			//all costs apply
 		}
-		else if(min.cost <= cost && max.cost >= cost)
+		else if(criteria.getMinCost() <= cost && criteria.getMaxCost() >= cost)
 		{
 			//price range match
 		}
-		else if(min.cost == 0 && max.cost >= cost)
+		else if(criteria.getMinCost() == 0 && criteria.getMaxCost() >= cost)
 		{
 			//price range match
 		}
-		else if(max.cost == 0 && min.cost <= cost)
+		else if(criteria.getMaxCost() == 0 && criteria.getMinCost() <= cost)
 		{
 			//price range match
 		}
@@ -213,19 +216,19 @@ public class Car implements Listing
 
 		//this if-else-if deals with checking year range
 		
-		if(min.year == 0 && max.year == 0)
+		if(criteria.getMinYear() == 0 && criteria.getMaxYear() == 0)
 		{
 			//all years apply
 		}
-		else if(min.year <= year && max.year >= year)
+		else if(criteria.getMinYear() <= year && criteria.getMaxYear() >= year)
 		{
 			//year range match
 		}
-		else if(min.year == 0 && max.year >= year)
+		else if(criteria.getMinYear() == 0 && criteria.getMaxYear() >= year)
 		{
 			//year range match
 		}
-		else if(max.year == 0 && min.year <= year)
+		else if(criteria.getMaxYear() == 0 && criteria.getMinYear() <= year)
 		{
 			//year range match
 		}
@@ -236,19 +239,11 @@ public class Car implements Listing
 		 				
 		//this if-else-if deals with color matching
 		
-		if(max.color == null && min.color == null)
-		{
-			//all colors apply
-		}
-		else if(min.color == null && color.equalsIgnoreCase(max.color))
+		if(criteria.getColor() == null)
 		{
 			//color match
 		}
-		else if(max.color == null && color.equalsIgnoreCase(min.color))
-		{
-			//color match
-		}
-		else if(color.equalsIgnoreCase(min.color) || color.equalsIgnoreCase(max.color))
+		else if(color.equalsIgnoreCase(criteria.getColor().trim()))
 		{
 			//color match
 		}
@@ -259,19 +254,11 @@ public class Car implements Listing
 		
 		//this if-else-if deals with make matching
 		
-		if(min.make == null && max.make == null)
+		if(criteria.getMake() == null)
 		{
 			//all makes apply
 		}
-		else if(min.make == null && make.equalsIgnoreCase(max.make))
-		{
-			//make match
-		}
-		else if(max.make == null && make.equalsIgnoreCase(min.make))
-		{
-			//make match
-		}
-		else if(make.equalsIgnoreCase(min.make) || make.equalsIgnoreCase(max.make))
+		else if(make.equalsIgnoreCase(criteria.getMake().trim()))
 		{
 			//make match
 		}
@@ -282,19 +269,11 @@ public class Car implements Listing
 		
 		//this if-else-if deals with model matching
 		
-		if(min.model == null && max.model == null)
+		if(criteria.getModel() == null)
 		{
 			//all models apply
 		}
-		else if(min.model == null && model.equalsIgnoreCase(max.model))
-		{
-			//model match
-		}
-		else if(max.model == null && model.equalsIgnoreCase(min.model))
-		{
-			//model match
-		}
-		else if(model.equalsIgnoreCase(min.model) || model.equalsIgnoreCase(max.model))
+		else if(model.equalsIgnoreCase(criteria.getModel().trim()))
 		{
 			//model match
 		}
